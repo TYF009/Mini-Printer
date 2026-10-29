@@ -19,6 +19,7 @@ typedef struct
 {
     uint8_t battery;
     uint8_t temperature;
+    bool temperature_fault;
     paper_state_e paper_state;
     printer_state_e printer_state;
     bool read_ble_finish;

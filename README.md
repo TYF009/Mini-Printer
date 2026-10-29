@@ -4,6 +4,10 @@
 <p align="center"><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
 <p align="center"><a href="releases/README.md">Get Android</a> · <a href="docs/en/getting-started.md">Get started</a> · <a href="docs/en/index.md">Explore the engineering</a></p>
 
+[![Android](https://github.com/TYF009/Mini-Printer/actions/workflows/android.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/android.yml)
+[![Firmware](https://github.com/TYF009/Mini-Printer/actions/workflows/firmware.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/firmware.yml)
+[![Documentation](https://github.com/TYF009/Mini-Printer/actions/workflows/quality.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/quality.yml)
+
 [![Watch FOLI — Made Tangible](media/images/hero.jpg)](media/video/FOLI-Made-Tangible-90s.mp4)
 
 **[Watch the 90-second film →](media/video/FOLI-Made-Tangible-90s.mp4)**

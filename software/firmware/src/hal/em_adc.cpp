@@ -1,4 +1,5 @@
 #include "em_config.h"
+#include "utils/temperature.h"
 
 
 
@@ -79,20 +80,9 @@ float em_temp_calculate(float Rt)
  * @return float
  */
 float get_adc_temperatrue(){
-  float temp = 0.0f;
-  float Rt=0;
-  float vol=0;
-  //ADC转换为电压 vol=AD/4096*VCC
-  // vol=(float)((analogRead(PIN_TEMPERATRUE))*(3.3/4096));
-  // vol=(float)((analogRead(PIN_TEMPERATRUE))*(3900.0/4095.0));
-  // Serial.printf("ADC temperatrue analog value = %f %d\n",vol,analogRead(PIN_TEMPERATRUE));
-  vol = analogReadMilliVolts(PIN_TEMPERATRUE)/1000.0;
-  Serial.printf("ADC temperatrue analog value = %f\n",vol);
-  //电压转换为阻值 10k  vol/VCC=Rt/(R+Rt)  vol/3.3=Rt/(10000+Rt)
-  Rt=(vol*10000)/(3.3-vol);
-  Serial.printf("ADC temperatrue Rt = %f\n",Rt);
-  temp = em_temp_calculate(Rt);
-  return temp;
+  const int raw=analogRead(PIN_TEMPERATRUE);
+  if(raw<=0 || raw>=4095)return NAN;
+  return foli::ntc_celsius(float(analogReadMilliVolts(PIN_TEMPERATRUE)));
 }
 
 void em_adc_test(){

@@ -1,4 +1,5 @@
 #include "utils/print_protocol.h"
+#include "utils/temperature.h"
 #include <cassert>
 #include <cstdio>
 #include <vector>
@@ -41,5 +42,22 @@ int main() {
     assert(!queue.complete());assert(!queue.push(nullptr,48));assert(!queue.push(input.data(),0));
     assert(queue.push(input.data(),48));assert(queue.pop(output));queue.clear();
     assert(memcmp(output,input.data(),48)==0);
-    std::puts("Firmware protocol/row-buffer regression tests passed");
+    const float nan=std::numeric_limits<float>::quiet_NaN();
+    const float inf=std::numeric_limits<float>::infinity();
+    assert(std::fabs(ntc_celsius(2475)-25.5f)<0.01f);
+    for(float mv: {0.0f,-1.0f,3300.0f,3400.0f,nan,inf}) {
+        assert(!std::isfinite(ntc_celsius(mv)));
+        assert(!temperature_allows_heating(ntc_celsius(mv)));
+    }
+    for(float invalid: {-1.0f,125.1f,256.0f,1000.0f,nan,inf,-inf}) {
+        assert(!valid_temperature(invalid));
+        assert(!temperature_allows_heating(invalid));
+        assert(temperature_byte(invalid)==255); // No wrapping a hot/invalid sample into a cold byte.
+    }
+    assert(temperature_allows_heating(0));assert(temperature_allows_heating(65));
+    assert(!temperature_allows_heating(65.01f));assert(temperature_byte(65.01f)==66);
+    assert(temperature_byte(125)==125);assert(temperature_byte(0)==0);
+    assert(!temperature_allows_heating(ntc_celsius(.01f)));
+    assert(!temperature_allows_heating(ntc_celsius(3299)));
+    std::puts("Firmware protocol/row-buffer/temperature regression tests passed");
 }

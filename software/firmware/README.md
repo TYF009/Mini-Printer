@@ -18,6 +18,8 @@ Flash only after checking pinout and hardware compatibility: `pio run --project-
 ## Integration fixes
 
 - A6 completion commands return immediately instead of entering the raster queue.
+- BLE writes use callback-owned `param->write.value/len`, never the characteristic value buffer shared with status notifications. The pinned library invokes the same two-argument callback for ordinary and EXEC_WRITE events, so an event-aware custom dispatcher explicitly gates ordinary zero-offset writes. Prepared/execute writes are unsupported and clear idle partial jobs.
+- NTC raw rails, invalid divider math, NaN/Inf, negative and unrepresentable temperatures reject heating. An explicit fault flag and diagnostic byte 255 replace the previous fail-open 0°C fallback; fractional readings above 65°C cannot truncate to a safe-looking 65.
 - Arbitrary BLE write fragments assemble into complete 48-byte rows. Partial final rows, empty jobs and capacity overflow reject the job at A6 instead of printing stale/truncated bytes.
 - Queue enqueue/dequeue/clear/count operations use one mutex; dequeued rows copy into consumer-owned storage before the lock is released.
 - The main printer loop yields so the priority-zero button task can run. FreeRTOS delays explicitly convert milliseconds to ticks.
@@ -31,7 +33,7 @@ Each row is 384 monochrome dots / 48 bytes, MSB first. A5×4 plus density byte s
 
 The queue holds 1000 rows. Android intentionally limits jobs to 768 rows. Legacy command prefixes are ambiguous if an arbitrary five-byte raster fragment exactly matches them; the Android sender uses full rows after MTU negotiation. There is no job identifier, CRC, positive row acknowledgement, transport retry protocol or separate error-completion state. `FINISH` therefore means stopped/returned, not proof of a successful physical print. Overflow rejection has no explicit wire error packet; the app must not blindly resend an uncertain job.
 
-The watchdog remains a fixed 20-second print deadline. A timeout remains latched until restart; no throughput claim is made. The heat-compensation formula and pulse timings are retained pending physical characterization. NTC open/short detection and calibration are not established; a zero idle reading is not evidence of a valid 0°C measurement. Do not interpret these guards as a certified safety system.
+The watchdog remains a fixed 20-second print deadline. A timeout remains latched until restart; no throughput claim is made. The heat-compensation formula and pulse timings are retained pending physical characterization. NTC mathematical/raw-rail guards are implemented, but physical open/short characterization and calibration remain unverified. Invalid samples use status temperature byte 255; the four-byte protocol has no separate diagnostic field. A zero idle reading observed with older firmware is not evidence of a valid 0°C measurement. Cross-task status ownership remains legacy shared state; these changes are not a complete concurrency redesign. Do not interpret these guards as a certified safety system.
 
 ## Verified interface constants
 
@@ -44,8 +46,10 @@ g++ -std=c++11 -Wall -Wextra -Werror -I software/firmware/src software/firmware/
 /tmp/foli-tests
 ```
 
-The tests exercise actual shared command/row-buffer code: A5/A6 routing, raster-prefix preservation, fragmented 20/48/244-byte writes, incomplete rows, atomic overflow rejection, clearing, copy-out independence and 10,000 wraparounds. They do not simulate the radio, MCU task scheduling, electrical outputs or print quality. The Firmware workflow runs these tests and compiles the ESP32 target.
+The tests exercise actual shared command/row-buffer code: A5/A6 routing, raster-prefix preservation, fragmented 20/48/244-byte writes, incomplete rows, atomic overflow rejection, clearing, copy-out independence and 10,000 wraparounds. Additional actual shared temperature-helper cases cover divider rails, NaN/Inf, negative/out-of-range temperatures, the 65°C boundary and unsigned conversion. They do not simulate the radio, MCU task scheduling, electrical outputs or print quality. The Firmware workflow runs these tests and compiles the ESP32 target.
 
-Local verification on 2026-10-30: ESP32 build passed using PlatformIO 6.2.0 / platform 7.0.1; RAM 88,012 of 327,680 bytes, flash 1,151,101 of 1,310,720 bytes. The C++11 host executable compiled with Zig 0.13 and passed all regression cases. These are local results; remote CI status is reported separately. No flash/upload command was executed.
+Local verification on 2026-10-30: ESP32 build passed using PlatformIO 6.2.0 / platform 7.0.1; RAM 88,012 of 327,680 bytes, flash 1,151,529 of 1,310,720 bytes. The C++11 host executable compiled with Zig 0.13 and passed all regression cases. These are local results; remote CI status is reported separately. No flash/upload command was executed.
 
 Only the configured receive-then-print mode (`START_PRINTER_WHEN_FINISH_RAED=1`) is supported by this integration. The alternate streaming branch is retained for reference; writes are gated while printing, so do not enable it as a supported mode.
+
+Nominal end-feed power ordering is retained from the legacy driver and needs physical review; this change does not alter the heating pulse formula or power sequencing during normal completion.

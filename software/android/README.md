@@ -72,6 +72,7 @@ Android 12+: Nearby devices permissions (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`).
 | Density command | `A5 A5 A5 A5 01/02/03` for Light/Medium/Dark |
 | Start after transfer | `A6 A6 A6 A6 01` |
 | Status | battery, temperature, paper enum, print enum: exactly 4 bytes |
+| Temperature sentinel | 255 = sensor unavailable in revised firmware; never displayed as 255 degrees |
 | Paper enum | 0 = loaded, 1 = missing |
 | Print enum | 0 = initial, 1 = start, 2 = working, 3 = finished or stopped (not success acknowledgement) |
 | Transfer | Acknowledged GATT writes with at least 20 ms between packets |
@@ -80,14 +81,14 @@ Android 12+: Nearby devices permissions (`BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`).
 
 MTU negotiation can be affected by other GATT clients and OS versions. FOLI checks the resulting size and rejects connections that cannot transmit a whole row. Acknowledged GATT writes establish transport acceptance, not application-level proof that every line was printed; the legacy protocol has no per-line sequence numbers or checksums.
 
-Legacy firmware limitations remain:
+Firmware compatibility and remaining limits:
 
-- The local A6 branch falls through into the image queue and may append a stray/corrupted row. The app cannot eliminate this firmware bug while keeping the existing protocol.
+- Older upstream firmware lets A6 fall through into the image queue and may append a stray/corrupted row. The hardened firmware in this repository returns after command handling and rejects partial/overflowed jobs; these fixes have build/host-test evidence, not a new physical print validation.
 - The firmware uses a fixed 20-second print timeout. A 768-row buffer bound is not a promise that all dense prints will finish within that timer. Dense/long-image validation and an appropriate firmware change are required before release.
 - Firmware state 3 means finished or stopped and does not distinguish all error causes. Even a nominal started-to-stopped transition remains unconfirmed. FOLI preserves the restart requirement and never declares physical print success from this packet. A terminal packet without an observed start also cannot identify the current job.
 - There is no cancel command. Stopping the app's transfer does not stop a print that has already begun.
 - After interrupted/unconfirmed transfers, the app blocks another job until the user power-cycles the printer and explicitly acknowledges that reset. Reconnecting alone does not clear the printer's queue.
-- Existing firmware battery calculation and other known issues can affect reported values. The app validates packet shape/ranges but cannot calibrate the hardware remotely.
+- Older firmware battery calculation can produce invalid percentages. The hardened source clamps the computed value, while physical calibration and other sensor limits remain. The app validates packet shape/ranges but cannot calibrate hardware remotely.
 
 ## Source map
 
@@ -119,3 +120,7 @@ The wrapper distribution checksum is pinned to the official [Gradle 7.4 binary c
 ### Legacy terminal-state correction
 
 `PrintOutcome` is shared by the actual BLE receive path and host tests. A nominal terminal packet becomes `STOPPED_UNCONFIRMED`; paper-out, overheat or a previous failure cannot become success. An unstarted job remains pending. Interrupted/unconfirmed jobs retain their recovery requirement until an explicit printer-restart acknowledgement. `MainActivity` uses this typed outcome rather than parsing UI text to manage persisted uncertainty. Seven host scenarios cover this decision boundary; there is still no new physical verification.
+
+### Unavailable print-head sensor
+
+Revised firmware reserves temperature byte 255 for an unavailable/invalid sensor and refuses heating. Android displays Sensor unavailable, blocks printing, and treats the value during an active job as failure requiring inspection and restart rather than a cooldown. Legacy firmware does not implement this sentinel; its observed idle zero reading remains a historical limitation, not a confirmed valid sensor reading. Seven shared temperature helper cases and eight outcome cases cover the sentinel and stop semantics on the host; no sensor hardware test is implied.

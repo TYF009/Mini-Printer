@@ -8,7 +8,7 @@ public enum PrintOutcome {
             boolean failed, int paper, int temperature, int state) {
         if (failed) return FAILED;
         if (!awaiting) return IDLE;
-        if (paper == 1 || temperature >= 65) return FAILED;
+        if (paper == 1 || PrinterProtocol.temperatureBlocksPrinting(temperature)) return FAILED;
         if (started && state == 3) return STOPPED_UNCONFIRMED;
         return IN_PROGRESS;
     }

@@ -15,6 +15,6 @@ output = Path("build") / "host-tests"
 source = Path("app/src/main/java/studio/foli/android")
 subprocess.run([tool("javac"), "-encoding", "UTF-8", "-d", str(output),
                 str(source / "PrinterProtocol.java"), str(source / "BleOperation.java"), str(source / "PrintOutcome.java"),
-                "tests/ProtocolTest.java", "tests/BleOperationTest.java", "tests/PrintOutcomeTest.java"], check=True, cwd=root)
-for test in ("ProtocolTest", "BleOperationTest", "PrintOutcomeTest"):
+                "tests/ProtocolTest.java", "tests/BleOperationTest.java", "tests/PrintOutcomeTest.java", "tests/TemperatureTest.java"], check=True, cwd=root)
+for test in ("ProtocolTest", "BleOperationTest", "PrintOutcomeTest", "TemperatureTest"):
     subprocess.run([tool("java"), "-cp", str(output), test], check=True, cwd=root)

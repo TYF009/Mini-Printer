@@ -21,12 +21,13 @@ Relevant classes are in [the Android source](../../software/android/app/src/main
 | Density | `A5 A5 A5 A5 01/02/03` |
 | End of transfer / start trigger | `A6 A6 A6 A6 01` |
 | Status payload | Four bytes: battery, temperature, paper, print state |
+| Unavailable temperature | 255 in hardened firmware; heating is blocked |
 | Paper | 0 loaded; 1 missing |
-| Print state | 0 initial; 1 start; 2 working; 3 finish |
+| Print state | 0 initial; 1 start; 2 working; 3 finished-or-stopped |
 
 FOLI sends whole raster rows using acknowledged GATT writes and requires a negotiated MTU of at least 51 bytes. The protocol guide in [Android documentation](../../software/android/README.md) describes pacing and current limits. Older upstream guidance about arbitrary 20-byte splitting should not be substituted for this app's row-based transfer contract.
 
-A GATT write callback establishes transport acceptance. The legacy wire format has no job ID, per-row sequence number or application-level checksum. The UI therefore distinguishes connection, sending and device-reported printing. Confirmation depends on observing the expected state sequence; absence of that sequence is uncertainty, not success. Restart recovery is deliberate because reconnecting alone does not clear a partially received job.
+A GATT write callback establishes transport acceptance. The legacy wire format has no job ID, per-row sequence number or application-level checksum. The UI distinguishes connection, sending and device-reported printing. Even an observed start-to-terminal sequence remains STOPPED_UNCONFIRMED: state 3 does not distinguish physical success from an error stop. The app asks the user to inspect the paper and confirm a printer restart before another job. Reconnecting alone does not establish that a partially received job was cleared.
 
 ## Firmware: buffer, heat and feed
 

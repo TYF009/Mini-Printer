@@ -162,8 +162,8 @@ public final class BlePrinter {
     private void receive(byte[] value){
         int[] s=PrinterProtocol.decodeStatus(value);if(s==null)return;
         battery=s[0];temperature=s[1];paper=s[2];printState=s[3];
-        if(busy()&&(paper==1||temperature>=65)){
-            fail(paper==1?"Out of paper. Load paper, then restart the printer before retrying.":"Print head is hot. Let it cool; check the print before retrying.");return;
+        if(busy()&&(paper==1||PrinterProtocol.temperatureBlocksPrinting(temperature))){
+            fail(PrinterProtocol.temperatureUnavailable(temperature)?"Print-head sensor unavailable. Stop using the printer, check the sensor, then restart before retrying.":paper==1?"Out of paper. Load paper, then restart the printer before retrying.":"Print head is hot. Let it cool; check the print before retrying.");return;
         }
         if(busy()&&(printState==1||printState==2)){started=true;if(awaiting)status="Printing…";}
         PrintOutcome reported=PrintOutcome.fromStatus(awaiting,started,failedJob,paper,temperature,printState);
@@ -173,7 +173,7 @@ public final class BlePrinter {
             if(poll!=null)main.removeCallbacks(poll);
             status="Printer stopped. Check your paper. Completion is not confirmed; restart the printer before another job.";
         }
-        else if(!busy()&&!dirty)status=paper==1?"Out of paper. Load a fresh roll.":temperature>=65?"Print head is hot. Give it a moment to cool.":"Ready for your next little idea.";
+        else if(!busy()&&!dirty)status=PrinterProtocol.temperatureUnavailable(temperature)?"Print-head sensor unavailable. Check the sensor before printing.":paper==1?"Out of paper. Load a fresh roll.":temperature>=65?"Print head is hot. Give it a moment to cool.":"Ready for your next little idea.";
         change();
     }
     private void readStatus(){
@@ -194,6 +194,7 @@ public final class BlePrinter {
         if(pending)return "Synchronizing device status. Wait a moment, then try again.";
         if(paper<0||temperature<0||battery<0)return "Waiting for real device status. Refresh status or wait for the next notification.";
         if(paper==1)return "Out of paper. Load paper before printing.";
+        if(PrinterProtocol.temperatureUnavailable(temperature))return "Print-head sensor unavailable. Check the sensor before printing.";
         if(temperature>=65)return "The print head is hot. Let it cool before printing.";
         if(printState==1||printState==2)return "The printer is already working. Wait for it to finish.";
         return null;

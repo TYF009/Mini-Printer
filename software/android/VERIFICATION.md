@@ -68,3 +68,7 @@ The 0.2.1 permission-related checks exercise the host-side recovery boundary onl
 ## Legacy terminal-state semantics correction — 0.2.1
 
 The actual receive path now uses shared `PrintOutcome.fromStatus`. State 3 is finished-or-stopped, never physical-success acknowledgement. A nominal observed start→terminal transition stops waiting but retains `dirty` and restart recovery; paper-out, overheat or previous failure cannot clear an interrupted job. A terminal without observed start remains pending. `MainActivity.changed()` uses typed outcome/restart confirmation rather than an English status prefix to manage persistence. Seven host outcome scenarios passed in addition to 158 encoder assertions and the BLE access boundary suite. These are source/host checks, not device or physical-print tests.
+
+## Temperature-unavailable sentinel — 0.2.1
+
+Temperature byte 255 is reserved by revised firmware for an invalid/unavailable sensor. Shared protocol helpers drive both the UI label and printing guards; active jobs fail with inspection/restart guidance, not cooldown. Host checks pass 158 encoder assertions, the BLE access boundary, eight outcome cases and seven temperature cases. Legacy idle zero readings remain a separate historical limitation. No new sensor, phone or printer test was performed.

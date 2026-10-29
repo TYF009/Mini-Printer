@@ -4,6 +4,10 @@
 <p align="center"><a href="README.md">English</a> · <strong>简体中文</strong></p>
 <p align="center"><a href="releases/README.zh-CN.md">下载 Android</a> · <a href="docs/zh-CN/getting-started.md">快速开始</a> · <a href="docs/zh-CN/index.md">工程文档</a></p>
 
+[![Android](https://github.com/TYF009/Mini-Printer/actions/workflows/android.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/android.yml)
+[![固件](https://github.com/TYF009/Mini-Printer/actions/workflows/firmware.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/firmware.yml)
+[![文档](https://github.com/TYF009/Mini-Printer/actions/workflows/quality.yml/badge.svg)](https://github.com/TYF009/Mini-Printer/actions/workflows/quality.yml)
+
 [![FOLI 产品展示视频](media/images/hero.jpg)](media/video/FOLI-Made-Tangible-90s.mp4)
 
 **[观看 90 秒产品片 →](media/video/FOLI-Made-Tangible-90s.mp4)**

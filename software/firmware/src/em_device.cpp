@@ -18,7 +18,8 @@ void init_device_state(){
     memset(&g_device_state,0,sizeof(device_state_t));
     g_device_state.printer_state = PRINTER_STATUS_INIT;
     g_device_state.battery = 100;
-    g_device_state.temperature = 30;
+    g_device_state.temperature = 255;
+    g_device_state.temperature_fault = true;
     g_device_state.paper_state = PAPER_STATUS_NORMAL;
     g_device_state.read_ble_finish = false;
 }

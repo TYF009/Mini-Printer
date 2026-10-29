@@ -2,6 +2,12 @@ package studio.foli.android;
 
 /** Pure Java encoding shared by the app and host-side regression tests. */
 public final class PrinterProtocol {
+    public static final int TEMPERATURE_UNAVAILABLE = 255;
+    public static boolean temperatureUnavailable(int value) { return value == TEMPERATURE_UNAVAILABLE; }
+    public static boolean temperatureBlocksPrinting(int value) { return temperatureUnavailable(value) || value >= 65; }
+    public static String temperatureText(int value) {
+        return value < 0 ? "—" : temperatureUnavailable(value) ? "Sensor unavailable" : value + " °C";
+    }
     public static final int WIDTH = 384;
     public static final int ROW_BYTES = 48;
     // Legacy queue holds 1000 rows and accidentally enqueues the A6 command.

@@ -54,7 +54,7 @@
     {
       "file": "media/video/verification.json",
       "kind": "product-film",
-      "sha256": "a11016af24784236124b728b9d5858e7265f079ea6369d8cc423fbea39b80c2c"
+      "sha256": "94a204551b0e6007e1dd2f0a0824ba81682a3fb0a06b36bf1d916efe8fcccf90"
     },
     {
       "file": "media/brand/foli-brand-board.png",
@@ -64,17 +64,17 @@
     {
       "file": "media/brand/foli-brand-board.svg",
       "kind": "brand-identity",
-      "sha256": "85ae199b9be65db1a20447841a44f5cd34c2cede875a0c24661f7e8029a76b53"
+      "sha256": "f82c9d184cd5c4c6da37f56b71e8b0ccd716d2bec7d734db7b8e840691e0c328"
     },
     {
       "file": "media/brand/foli-mark.svg",
       "kind": "brand-identity",
-      "sha256": "7c29c156750d9e63d9d7689ddde0fe85fbb8285039b153fa607a9e52e663fd66"
+      "sha256": "6c0a5c295a96b09a4ef0a4112d626dde5faf31fe171ec41ae2f090426692634f"
     },
     {
       "file": "media/brand/foli-wordmark.svg",
       "kind": "brand-identity",
-      "sha256": "20cc620ea741dd12794c5fee25cc182e91013440c0f10d7c8005d3ca6ba8de0c"
+      "sha256": "92c03fd77e6b69bc705ed4117030ef704dfbe7e65e67d07d0220be69ca1267df"
     }
   ]
 }

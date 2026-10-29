@@ -9,8 +9,16 @@ from OCP.TopoDS import TopoDS
 from OCP.BRepMesh import BRepMesh_IncrementalMesh
 from OCP.BRep import BRep_Tool
 from OCP.TopLoc import TopLoc_Location
-r=STEPControl_Reader();r.ReadFile(str(ROOT/'mechanical/cad/assembly.step'));r.TransferRoots()
+from OCP.IFSelect import IFSelect_RetDone
+source=ROOT/'mechanical/cad/assembly.step'
+if not source.is_file():raise FileNotFoundError('Extract the mechanical source bundle to '+str(source))
+r=STEPControl_Reader()
+if r.ReadFile(str(source))!=IFSelect_RetDone:raise ValueError('STEP reader rejected the assembly input')
+if r.TransferRoots()<1 or r.OneShape().IsNull():raise ValueError('STEP has no transferable assembly geometry')
 e=TopExp_Explorer(r.OneShape(),TopAbs_SOLID);out=ROOT/'media/source/work/meshes';out.mkdir(parents=True,exist_ok=True)
+if not e.More():raise ValueError('STEP contains no solid parts')
+assert out.resolve().is_relative_to(ROOT.resolve())
+for old in out.glob('[0-9][0-9][0-9][0-9].npz'):old.unlink()
 i=0
 while e.More():
  s=TopoDS.Solid_s(e.Current());BRepMesh_IncrementalMesh(s,0.12,False,0.25,True)

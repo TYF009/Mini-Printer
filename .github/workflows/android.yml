@@ -27,6 +27,8 @@ jobs:
         with:
           python-version: '3.11'
       - uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: platform-tools
       - name: Install pinned Android SDK components
         run: sdkmanager 'platforms;android-32' 'build-tools;30.0.3'
       - name: Host protocol and failure-boundary checks

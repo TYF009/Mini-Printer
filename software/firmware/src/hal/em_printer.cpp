@@ -207,6 +207,7 @@ bool printing_error_check(bool need_report)
 {
     const bool fault=get_printer_timeout_status() ||
         get_device_state()->paper_state==PAPER_STATUS_LACK ||
+        get_device_state()->temperature_fault ||
         get_device_state()->temperature>65;
     if(!fault)return false;
     // Shut down before any blocking LED/beeper feedback.

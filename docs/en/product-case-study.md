@@ -24,7 +24,7 @@ Template filters, local favorites, larger previews, Cancel/Undo and retained scr
 
 ## Decision 3: uncertainty is a product state
 
-Bluetooth connection, successful data transfer and finished paper output are different events. The inherited protocol offers limited end-to-end evidence. FOLI presents transfer state separately, requires the expected device-state sequence before confirming completion and protects against blindly resending a partly received job.
+Bluetooth connection, successful data transfer and finished paper output are different events. The inherited protocol offers limited end-to-end evidence. FOLI presents transfer state separately. Even an observed start-to-terminal sequence becomes STOPPED_UNCONFIRMED because state 3 can also mean an error stop. The app asks the user to inspect the paper and confirm a printer restart before another job, protecting against blindly resending partly received content.
 
 This can require an explicit printer restart after an uncertain transfer. It is less convenient than automatic retry, but avoids silently duplicating or corrupting a physical job when the protocol cannot establish what was printed. Firmware fixes and future protocol improvements must preserve this distinction.
 

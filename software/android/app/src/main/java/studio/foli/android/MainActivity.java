@@ -436,7 +436,7 @@ public final class MainActivity extends Activity implements BlePrinter.Listener 
         content.addView(label("REPORTED BY YOUR PRINTER",10,MUTED,true));gap(content,12);
         batteryValue=deviceStat("battery","Battery",printer.battery<0?"—":printer.battery+"%");
         paperValue=deviceStat("note","Paper",printer.paper<0?"Unknown":printer.paper==0?"Loaded":"Out of paper");
-        temperatureValue=deviceStat("printer","Print head",printer.temperature<0?"—":printer.temperature+" °C");gap(content,8);
+        temperatureValue=deviceStat("printer","Print head",PrinterProtocol.temperatureText(printer.temperature));gap(content,8);
         jobPanel(content);gap(content,10);
         if(printer.ready||printer.connecting)fullButton(content,"Disconnect",false,()->{if(printer.busy())confirmStop();else{printer.disconnect();show();}});
         if(printer.busy()){gap(content,12);fullButton(content,"Stop sending / disconnect",false,this::confirmStop);}
@@ -493,7 +493,7 @@ public final class MainActivity extends Activity implements BlePrinter.Listener 
     private void updateStatus(){
         if(batteryValue!=null)batteryValue.setText(printer.battery<0?"—":printer.battery+"%");
         if(paperValue!=null)paperValue.setText(printer.paper<0?"Unknown":printer.paper==0?"Loaded":"Out of paper");
-        if(temperatureValue!=null)temperatureValue.setText(printer.temperature<0?"—":printer.temperature+" °C");
+        if(temperatureValue!=null)temperatureValue.setText(PrinterProtocol.temperatureText(printer.temperature));
         if(footerAction!=null)footerAction.setText(printer.busy()?"View print progress":printer.ready?"Review & print":"Connect to print");
         if(stateText!=null)stateText.setText(printer.status);
         if(chip!=null)chip.setText(connectionLabel());

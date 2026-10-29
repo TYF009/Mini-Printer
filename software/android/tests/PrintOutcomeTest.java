@@ -12,6 +12,7 @@ public final class PrintOutcomeTest {
         expect(PrintOutcome.fromStatus(true,false,false,0,24,3),PrintOutcome.IN_PROGRESS,"Stale terminal without start must wait");
         expect(PrintOutcome.fromStatus(false,false,false,0,24,3),PrintOutcome.IDLE,"Idle terminal does not identify a job");
         expect(PrintOutcome.fromStatus(true,true,false,0,24,2),PrintOutcome.IN_PROGRESS,"Working remains pending");
-        System.out.println("PASS: 7 legacy print-outcome cases");
+        expect(PrintOutcome.fromStatus(true,true,false,0,255,3),PrintOutcome.FAILED,"Unavailable sensor cannot become success");
+        System.out.println("PASS: 8 legacy print-outcome cases");
     }
 }

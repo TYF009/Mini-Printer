@@ -1,6 +1,6 @@
 # Verification and remaining limits
 
-[简体中文](../zh-CN/verification.md) · [Documentation](index.md)
+[ç®€ä½“ä¸­æ–‡](../zh-CN/verification.md) Â· [Documentation](index.md)
 
 Evidence is grouped by what it actually establishes. An attractive render is not hardware evidence, a successful compile is not a radio test, and historical printing does not qualify every newer software revision.
 
@@ -10,8 +10,9 @@ Evidence is grouped by what it actually establishes. An attractive render is not
 |---|---|---|
 | Hardware | Supplied board/mechanism photographs and a physical thermal test page | Production yield, endurance, battery capacity or new app compatibility |
 | Android 0.2.0 | Build and Lint; 158 protocol assertions; APK signature; installation and scoped UI checks | Every photo path, lifecycle path, Android version or physical print |
+| Android 0.2.1 | Build/Lint/signature; encoder, access-change and terminal-outcome host checks | New phone installation, real permission revocation or physical printing |
 | UI device | Xiaomi Mi 6, Android 8/API 26 | General performance/FPS or broad accessibility qualification |
-| BLE baseline | Connected state and received four-byte packet; battery about 75–76%; missing paper matched the empty printer | Battery calibration, reliable head temperature or physical output |
+| BLE baseline | Connected state and received four-byte packet; battery about 75â€“76%; missing paper matched the empty printer | Battery calibration, reliable head temperature or physical output |
 | Repository hardening | Build and automated checks recorded with the changed source | Hardware qualification of new firmware fixes |
 | Product media | CAD motion, reconstructed UI, AI lifestyle concepts and original synthesized sound | Live-action use, measured interaction smoothness or a new print test |
 
@@ -19,7 +20,7 @@ The [detailed Android record](../../software/android/VERIFICATION.md) contains c
 
 ![Historical hardware evidence](../../media/images/hardware-evidence.jpg)
 
-The photographed test page reads `TM_Test: 24 °C`. Do not reuse an older README's 28 °C figure for this image without another supporting record.
+The photographed test page reads `TM_Test: 24 Â°C`. Do not reuse an older README's 28 Â°C figure for this image without another supporting record.
 
 ## What was observed on the phone
 
@@ -29,7 +30,7 @@ One startup raster duration is a single observation, not a sustained-performance
 
 ## Unresolved physical integration
 
-The connected empty printer reported `0 °C`. The owner suggested idle temperature updates may explain this; that is a hypothesis, not a confirmed sensor result. Do not interpret zero as a calibrated safe temperature. No print was sent during that connection observation.
+The connected empty printer reported `0 Â°C`. The owner suggested idle temperature updates may explain this; that is a hypothesis, not a confirmed sensor result. Do not interpret zero as a calibrated safe temperature. No print was sent during that connection observation.
 
 The historical protocol lacks job identifiers, row acknowledgments/checksums and a guaranteed cancel command. Interrupted transfers can leave buffered data. Old firmware completion/timeout behavior and A6 fall-through are known limitations. Changes addressing those issues must retain separate build/host-test evidence and physical-device follow-up status.
 
@@ -49,8 +50,8 @@ A future test should update the matching source revision's record rather than re
 
 ## Integration software checks
 
-Android 0.2.1 passed build/Lint (zero errors, one dependency-version advisory), 158 encoder assertions, BLE exception-boundary checks, seven shared terminal-outcome cases and APK v2 signature verification. State 3 is treated as stopped/unconfirmed, never proof of physical success; confirmation after a printer restart clears the recovery latch.
+Android 0.2.1 passed build/Lint (zero errors, one dependency-version advisory), 158 encoder assertions, BLE exception-boundary checks, eight shared terminal-outcome cases plus seven temperature cases and APK v2 signature verification. State 3 is treated as stopped/unconfirmed, never proof of physical success; confirmation after a printer restart clears the recovery latch.
 
-Firmware compiled with PlatformIO Core 6.2.0, espressif32 7.0.1 and Arduino-ESP32 2.0.17. Shared C++ regression tests covered command routing, six fragment sizes, row completion, overflow, copy-out independence and 10,000 ring-buffer wraparounds. RAM: 88,012 / 327,680 bytes; flash: 1,151,101 / 1,310,720 bytes. These are build sizes, not runtime performance measurements.
+Firmware compiled with PlatformIO Core 6.2.0, espressif32 7.0.1 and Arduino-ESP32 2.0.17. Shared C++ regression tests covered command routing, six fragment sizes, row completion, overflow, copy-out independence and 10,000 ring-buffer wraparounds. RAM: 88,012 / 327,680 bytes; flash: 1,151,529 / 1,310,720 bytes. These are build sizes, not runtime performance measurements.
 
 No firmware was flashed and no new physical print was attempted. Legacy timing/sensor calibration and the new fault shutdown behavior still require physical follow-up.
