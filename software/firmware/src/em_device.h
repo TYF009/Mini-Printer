@@ -20,7 +20,7 @@ typedef struct
     uint8_t battery;
     uint8_t temperature;
     paper_state_e paper_state;
-    printer_state_e printer_state; 
+    printer_state_e printer_state;
     bool read_ble_finish;
 }device_state_t;
 

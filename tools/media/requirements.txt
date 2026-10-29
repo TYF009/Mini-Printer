@@ -1,0 +1,4 @@
+numpy==1.26.4
+Pillow==11.3.0
+cadquery-ocp==7.8.1.1
+vtk==9.3.1

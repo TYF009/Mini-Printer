@@ -19,8 +19,8 @@ void adc_test() {
 
 /**
  * @brief 获取ADC引脚电压值，可根据需要加入滤波算法
- * 
- * @return int 
+ *
+ * @return int
  */
 int get_adc_volts(){
     // int analogValue = analogRead(PIN_BATTERY_ADC);
@@ -75,8 +75,8 @@ float em_temp_calculate(float Rt)
 
 /**
  * @brief Get the adc temperatrue object
- * 
- * @return float 
+ *
+ * @return float
  */
 float get_adc_temperatrue(){
   float temp = 0.0f;
@@ -100,7 +100,7 @@ void em_adc_test(){
   float vol=3.0f;
   Rt=(vol*10000)/(3.3-vol);
   Serial.printf("Rt = %f\n",Rt);
-  
+
   Rt = 60000; //60k 10°C
   float temp = 0.0f;
   temp = em_temp_calculate(Rt);

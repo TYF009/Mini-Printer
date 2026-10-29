@@ -10,6 +10,3 @@ void loop()
 {
   printer_run();
 }
-
-
-

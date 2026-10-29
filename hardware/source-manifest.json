@@ -1,0 +1,18 @@
+[
+  {
+    "file": "EDA-project/foli-mainboard.epro2",
+    "sha256": "8540bc616b7152b04b58db57eb089fb17cf5b8c8156b47617f75cecbef09284d"
+  },
+  {
+    "file": "exports/Gerber_Mini-printer.zip",
+    "sha256": "10035b5eb9d5f731973524cf69be557ef61e92ab4009ac9299383b27465ad887"
+  },
+  {
+    "file": "exports/Mini-Printer-BOM.xlsx",
+    "sha256": "b39588da61dd97e827cb533f00c58150903a4c4e3810bc786972614cb8d9e33d"
+  },
+  {
+    "file": "exports/schematic.png",
+    "sha256": "c50a6151599bb9509dfa804fd23cdfe277a0f639c929e91d50f02437b093467c"
+  }
+]

@@ -1,0 +1,77 @@
+1
+00:00:00,000 --> 00:00:03,800
+A little thought. Made tangible.
+
+2
+00:00:04,000 --> 00:00:09,800
+Meet FOLI. Little prints. Everyday joy.
+
+3
+00:00:10,000 --> 00:00:14,800
+Start with your paper and the Android app.
+
+4
+00:00:15,000 --> 00:00:17,800
+Connect your phone and printer over Bluetooth Low Energy.
+
+5
+00:00:18,000 --> 00:00:23,800
+Choose a template and make it personal.
+
+6
+00:00:24,000 --> 00:00:26,800
+Edit the words you want to keep.
+
+7
+00:00:27,000 --> 00:00:29,800
+Find your paper's style: Clean, Journal or Postcard.
+
+8
+00:00:30,000 --> 00:00:33,800
+Preview. Connect. Print.
+
+9
+00:00:34,000 --> 00:00:37,800
+A little focus for your day.
+
+10
+00:00:38,000 --> 00:00:41,800
+A little kindness for someone you love.
+
+11
+00:00:42,000 --> 00:00:45,800
+A little less to forget.
+
+12
+00:00:46,000 --> 00:00:53,800
+Behind every little print, a whole system works together.
+
+13
+00:00:54,000 --> 00:00:57,800
+The layout becomes a monochrome raster.
+
+14
+00:00:58,000 --> 00:01:01,800
+384 dots, packed eight per byte: 48 bytes per row.
+
+15
+00:01:02,000 --> 00:01:09,800
+Android sends row data over BLE.
+Firmware coordinates the thermal print mechanism and paper feed.
+
+16
+00:01:10,000 --> 00:01:15,800
+Power, control and printing, housed in one product.
+
+17
+00:01:16,000 --> 00:01:17,800
+A printable enclosure built around the system.
+
+18
+00:01:18,000 --> 00:01:23,800
+Explore the hardware, firmware, enclosure and Android app.
+
+19
+00:01:24,000 --> 00:01:29,500
+FOLI. Little prints. Everyday joy.
+github.com/TYF009/Mini-Printer

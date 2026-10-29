@@ -12,7 +12,8 @@ bool need_report = false;
 
 void read_battery()
 {
-    get_device_state()->battery = map(get_adc_volts()*2,3300,4200,0,100);
+    long percent=map(get_adc_volts()*2,3300,4200,0,100);
+    get_device_state()->battery = constrain(percent,0L,100L);
     if(get_device_state()->battery > 100)
         get_device_state()->battery = 100;
     Serial.printf("battery = %d\n",get_device_state()->battery);
@@ -136,11 +137,11 @@ void init_hal()
     attachInterrupt(PIN_PAPER, paper_isr, RISING);
 
 #ifdef BEEP_MODE
-    //蜂鸣器初始化  
+    //蜂鸣器初始化
     //设置通道频率和分辨率
     ledcSetup(channel, freq, resolution);
     //将通道0与引脚15连接
-    ledcAttachPin(PIN_BEEP, channel);   
+    ledcAttachPin(PIN_BEEP, channel);
 #endif
 
     pinMode(PIN_LED, OUTPUT);
