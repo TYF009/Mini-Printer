@@ -20,4 +20,3 @@ void init_spi()
     hspi.begin(PIN_SCK, 16, PIN_SDA, -1); // SCLK, MISO, MOSI, SS
     hspi.setFrequency(spiClk);
 }
-

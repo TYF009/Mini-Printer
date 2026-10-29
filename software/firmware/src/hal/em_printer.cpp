@@ -198,45 +198,23 @@ bool move_and_start_std(bool need_stop, uint8_t stbnum)
 
 /**
  * @brief 打印错误检查
- * 
+ *
  * @param need_report 是否需BLE上报
  * @return true 打印出错
  * @return false 打印正常
  */
 bool printing_error_check(bool need_report)
 {
-    if (get_printer_timeout_status())
-    {
-        Serial.print("打印超时\n");
-        return true;
-    }
-    if (get_device_state()->paper_state == PAPER_STATUS_LACK)
-    {
-        if(need_report){
-            // 停止打印
-            clean_printbuffer();
-            ble_report();
-        }
-        // 停止打印
-        Serial.print("缺纸\n");
-        run_beep(BEEP_WARN);
-        run_led(LED_WARN);
-        return true;
-    }
-    if (get_device_state()->temperature > 65)
-    {
-        if(need_report){
-            // 停止打印
-            clean_printbuffer();
-            ble_report();
-        }
-        // 停止打印
-        Serial.print("温度异常\n");
-        run_beep(BEEP_WARN);
-        run_led(LED_WARN);
-        return true;
-    }
-    return false;
+    const bool fault=get_printer_timeout_status() ||
+        get_device_state()->paper_state==PAPER_STATUS_LACK ||
+        get_device_state()->temperature_fault ||
+        get_device_state()->temperature>65;
+    if(!fault)return false;
+    // Shut down before any blocking LED/beeper feedback.
+    stop_printing();motor_stop();clean_printbuffer();
+    if(need_report)ble_report();
+    run_beep(BEEP_WARN);run_led(LED_WARN);
+    return true;
 }
 
 /**
@@ -247,10 +225,14 @@ bool printing_error_check(bool need_report)
  */
 void start_printing(uint8_t *data, uint32_t len)
 {
+    if(!data || !len || len%TPH_DI_LEN)return;
     uint32_t offset = 0;
     uint8_t *ptr = data;
     bool need_stop = false;
+    read_all_hal();
+    if(printing_error_check(true))return;
     init_printing();
+    bool fault=false;
     while (1)
     {
         if (len > offset)
@@ -264,11 +246,12 @@ void start_printing(uint8_t *data, uint32_t len)
             need_stop = true;
         if (move_and_start_std(need_stop, ALL_STB_NUM))
             break;
-        if(printing_error_check(false))
-            break;
+        if(printing_error_check(false)) { fault=true;break; }
     }
-    motor_run_step(40);
+    stop_printing();
+    if(!fault)motor_run_step(40);
     motor_stop();
+    clean_printbuffer();
     Serial.printf("打印完成\n");
 }
 
@@ -278,19 +261,24 @@ void start_printing(uint8_t *data, uint32_t len)
  */
 void start_printing_by_queuebuf()
 {
-    uint8_t *pdata = NULL;
+    uint8_t row[TPH_DI_LEN];
+    uint8_t *pdata = row;
     bool need_stop = false;
     uint32_t printer_count = 0;
+    read_all_hal();
+    if(printing_error_check(true))return;
     init_printing();
+    bool fault=false;
     while (1)
     {
         if (get_ble_rx_leftline() > 0)
         {
             // Serial.printf("printing...\n");
-            pdata = read_to_printer();
-            if (pdata != NULL)
+            if (read_to_printer(row))
             {
                 printer_count ++;
+                if((printer_count%16)==0)read_all_hal();
+                if(printing_error_check(true)) { fault=true;break; }
                 send_one_line_data(pdata);
                 if (move_and_start_std(false, ALL_STB_NUM))
                     break;
@@ -301,13 +289,13 @@ void start_printing_by_queuebuf()
             if (move_and_start_std(true, ALL_STB_NUM))
                 break;
         }
-        if (get_printer_timeout_status())
-            break;
-        if(printing_error_check(true))
-            break;
+        if (get_printer_timeout_status()) { fault=true;break; }
+        if(printing_error_check(true)) { fault=true;break; }
     }
-    motor_run_step(230);
+    stop_printing();
+    if(!fault)motor_run_step(230);
     motor_stop();
+    clean_printbuffer();
     Serial.printf("打印完成 接收总行数:%d 打印总行数:%d\n",get_blepack_count(),printer_count);
     clean_blepack_count();
 }
@@ -321,10 +309,14 @@ void start_printing_by_queuebuf()
  */
 void start_printing_by_onestb(uint8_t stbnum, uint8_t *data, uint32_t len)
 {
+    if(!data || !len || len%TPH_DI_LEN || stbnum>=6)return;
     uint32_t offset = 0;
     uint8_t *ptr = data;
     bool need_stop = false;
+    read_all_hal();
+    if(printing_error_check(true))return;
     init_printing();
+    bool fault=false;
     while (1)
     {
         Serial.printf("printer %d\n", offset);
@@ -339,13 +331,13 @@ void start_printing_by_onestb(uint8_t stbnum, uint8_t *data, uint32_t len)
             need_stop = true;
         if (move_and_start_std(need_stop, stbnum))
             break;
-        if (get_printer_timeout_status())
-            break;
-        if(printing_error_check(false))
-            break;
+        if (get_printer_timeout_status()) { fault=true;break; }
+        if(printing_error_check(false)) { fault=true;break; }
     }
-    motor_run_step(40);
+    stop_printing();
+    if(!fault)motor_run_step(40);
     motor_stop();
+    clean_printbuffer();
 }
 
 static void setDebugData(uint8_t *print_data)
@@ -375,6 +367,7 @@ void testSTB()
     setDebugData(print_data);
     start_printing_by_onestb(5, print_data, print_len);
     Serial.println("测试完成");
+    if(printing_error_check(false))return;
     motor_run_step(230);
 }
 

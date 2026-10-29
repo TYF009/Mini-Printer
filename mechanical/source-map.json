@@ -1,0 +1,26 @@
+[
+  {
+    "file": "stl/body.stl",
+    "original_name": "外壳主体230727.STL",
+    "sha256": "602f486902fb1f0b8e0854b81ca82f6a33c0e55c1ff96b4a1b56b811346c4b6f",
+    "bytes": 2212784
+  },
+  {
+    "file": "stl/upper-cover.stl",
+    "original_name": "上盖230719.STL",
+    "sha256": "21cedd86a40b00cec80506be1b3b6aa61d17a374c12f64cc794425d8e5c9c0e5",
+    "bytes": 877084
+  },
+  {
+    "file": "stl/lower-cover.stl",
+    "original_name": "下盖230719.STL",
+    "sha256": "3b0cc7d0d5d298ba161e29cf3f7147d18ffb882fcd635fd91de805f1b4edff14",
+    "bytes": 871084
+  },
+  {
+    "file": "stl/retainer.stl",
+    "original_name": "卡板230719.STL",
+    "sha256": "d65bb0aa48f9050a537fd894f5fef413de3a90271d7eacd134626f043b4a6bae",
+    "bytes": 85684
+  }
+]

@@ -16,7 +16,7 @@
 
 /**
  * @brief 打印密度设置
- * 
+ *
  */
 void set_heat_density(uint8_t density);
 /**
@@ -29,7 +29,7 @@ void start_printing(uint8_t *data, uint32_t len);
 
 /**
  * @brief 可变队列打印
- * 
+ *
  */
 void start_printing_by_queuebuf();
 
@@ -43,8 +43,8 @@ void start_printing_by_queuebuf();
 void start_printing_by_onestb(uint8_t stbnum, uint8_t *data, uint32_t len);
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void init_printer();
 

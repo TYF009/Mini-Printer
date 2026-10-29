@@ -1,5 +1,6 @@
 #include "em_hal.h"
 #include "em_adc.h"
+#include "utils/temperature.h"
 
 int freq = 2000;    //设置频率2000kHz
 int channel = 0;    //通道号，取值0 ~ 15
@@ -12,7 +13,8 @@ bool need_report = false;
 
 void read_battery()
 {
-    get_device_state()->battery = map(get_adc_volts()*2,3300,4200,0,100);
+    long percent=map(get_adc_volts()*2,3300,4200,0,100);
+    get_device_state()->battery = constrain(percent,0L,100L);
     if(get_device_state()->battery > 100)
         get_device_state()->battery = 100;
     Serial.printf("battery = %d\n",get_device_state()->battery);
@@ -22,11 +24,12 @@ void read_temperature()
 {
     float temperatrue = get_adc_temperatrue();
     Serial.printf("temperature = %f\n",temperatrue);
-    if(temperatrue >= EPISON){
-        get_device_state()->temperature = temperatrue;
-    }else{
-        get_device_state()->temperature = 0;
-    }
+    device_state_t* state=get_device_state();
+    const bool fault=!foli::temperature_allows_heating(temperatrue);
+    // Latch fault before publishing its diagnostic byte; clear only after a valid sample.
+    if(fault)state->temperature_fault=true;
+    state->temperature=foli::temperature_byte(temperatrue);
+    if(!fault)state->temperature_fault=false;
 }
 
 void run_beep(beep_type_e type){
@@ -136,11 +139,11 @@ void init_hal()
     attachInterrupt(PIN_PAPER, paper_isr, RISING);
 
 #ifdef BEEP_MODE
-    //蜂鸣器初始化  
+    //蜂鸣器初始化
     //设置通道频率和分辨率
     ledcSetup(channel, freq, resolution);
     //将通道0与引脚15连接
-    ledcAttachPin(PIN_BEEP, channel);   
+    ledcAttachPin(PIN_BEEP, channel);
 #endif
 
     pinMode(PIN_LED, OUTPUT);

@@ -1,0 +1,80 @@
+{
+  "source_notes": "docs/en/provenance.md",
+  "assets": [
+    {
+      "file": "media/images/app-overview.png",
+      "kind": "presentation-image",
+      "sha256": "fe1a358834f2f4d49b395b98c38be41e4c783e1da7c9c03fa67df4f2d9fa2c42"
+    },
+    {
+      "file": "media/images/assembly-explained.jpg",
+      "kind": "presentation-image",
+      "sha256": "0add8413daa276c2b0999a844116553650b8982b90d506ac38a333981e332196"
+    },
+    {
+      "file": "media/images/hardware-evidence.jpg",
+      "kind": "presentation-image",
+      "sha256": "68bf51fcf53651d1241acf4e3e96d72df582d114768711f9bf3b29356dbb936e"
+    },
+    {
+      "file": "media/images/hero.jpg",
+      "kind": "presentation-image",
+      "sha256": "fc5f1b0829f695bb005e8ed8ef4f8fcfa62f5cc97c61deea33a8d3da0acc0664"
+    },
+    {
+      "file": "media/images/system-architecture.png",
+      "kind": "presentation-image",
+      "sha256": "f351ca843f72a8bca941ea23516dbc04bdf9ec3455a0db2c18915e5ff3ccb33e"
+    },
+    {
+      "file": "media/gifs/app-tour.gif",
+      "kind": "interaction-or-CAD-animation",
+      "sha256": "f5a9ddb7a24c0a78dcc33c12b1d1f35c119e3bd46556ea0df1c000863557fa8d"
+    },
+    {
+      "file": "media/gifs/assembly.gif",
+      "kind": "interaction-or-CAD-animation",
+      "sha256": "e3c203dbbb8d5adef3c96afc83de445b3dc687a2f6a17097844f0a8d54143354"
+    },
+    {
+      "file": "media/gifs/screen-to-paper.gif",
+      "kind": "interaction-or-CAD-animation",
+      "sha256": "f4f9fbdc6c442eb4855d9e32bf6ce0d9c5d829e12fad361a45d85d5fdf67cd9d"
+    },
+    {
+      "file": "media/video/FOLI-Made-Tangible-90s.mp4",
+      "kind": "product-film",
+      "sha256": "2ddcaedeb1cf238ebd33abe83edfe642b9450e6058402145b2772b81529af29a"
+    },
+    {
+      "file": "media/video/FOLI-Made-Tangible.en.srt",
+      "kind": "product-film",
+      "sha256": "fc796edbd22dff2893838c965d66cc4a241027dad983847289619a0280e0f570"
+    },
+    {
+      "file": "media/video/verification.json",
+      "kind": "product-film",
+      "sha256": "94a204551b0e6007e1dd2f0a0824ba81682a3fb0a06b36bf1d916efe8fcccf90"
+    },
+    {
+      "file": "media/brand/foli-brand-board.png",
+      "kind": "brand-identity",
+      "sha256": "f89cb4c2aadccd7064cb5b60e5c41128102c34e9690d9ad2ca30982987c7f79d"
+    },
+    {
+      "file": "media/brand/foli-brand-board.svg",
+      "kind": "brand-identity",
+      "sha256": "f82c9d184cd5c4c6da37f56b71e8b0ccd716d2bec7d734db7b8e840691e0c328"
+    },
+    {
+      "file": "media/brand/foli-mark.svg",
+      "kind": "brand-identity",
+      "sha256": "6c0a5c295a96b09a4ef0a4112d626dde5faf31fe171ec41ae2f090426692634f"
+    },
+    {
+      "file": "media/brand/foli-wordmark.svg",
+      "kind": "brand-identity",
+      "sha256": "92c03fd77e6b69bc705ed4117030ef704dfbe7e65e67d07d0220be69ca1267df"
+    }
+  ]
+}

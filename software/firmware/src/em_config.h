@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define _FREERTOS_OPEN_ 
+#define _FREERTOS_OPEN_
 
 #define SERVICE_UUID "4fafc201-1fb5-459e-8fcc-c5c9c331914b"         // 自定义打印服务UUID
 
@@ -42,20 +42,20 @@
 #define PIN_SDA 13
 
 //原厂 V4
-#define PIN_STB1 26  
-#define PIN_STB2 27  
-#define PIN_STB3 14  
-#define PIN_STB4 32  
-#define PIN_STB5 33  
-#define PIN_STB6 25  
+#define PIN_STB1 26
+#define PIN_STB2 27
+#define PIN_STB3 14
+#define PIN_STB4 32
+#define PIN_STB5 33
+#define PIN_STB6 25
 
 //原厂 V3
-// #define PIN_STB1 25  
-// #define PIN_STB2 33  
-// #define PIN_STB3 32  
-// #define PIN_STB4 14  
-// #define PIN_STB5 27  
-// #define PIN_STB6 26  
+// #define PIN_STB1 25
+// #define PIN_STB2 33
+// #define PIN_STB3 32
+// #define PIN_STB4 14
+// #define PIN_STB5 27
+// #define PIN_STB6 26
 
 //拆机 V2
 // #define PIN_STB1 14

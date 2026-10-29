@@ -4,7 +4,7 @@
 #include "hal/em_printer.h"
 #include "hal/em_adc.h"
 
-bool printer_test = false;
+volatile bool printer_test = false;
 
 void key_click_handle()
 {
@@ -79,7 +79,7 @@ void run_report()
 void run_printer()
 {
     device_state_t *pdevice = get_device_state();
-    #ifdef START_PRINTER_WHEN_FINISH_RAED
+    #if START_PRINTER_WHEN_FINISH_RAED
         if (pdevice->read_ble_finish == true)
         {
             if (pdevice->printer_state == PRINTER_STATUS_FINISH ||
@@ -114,6 +114,7 @@ void run_printer()
         // 正常打印
         start_printing_by_queuebuf();
         pdevice->printer_state = PRINTER_STATUS_FINISH;
+        ble_report();
     }
 }
 
@@ -122,7 +123,7 @@ void task_report(void *pvParameters)
     for (;;) // A Task shall never return or exit.
     {
         run_report();
-        vTaskDelay(100);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
@@ -131,7 +132,7 @@ void task_button(void *pvParameters)
     for (;;) // A Task shall never return or exit.
     {
         key_check_run(); // 需要周期调用按键处理函数
-        vTaskDelay(10);
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
 }
 
@@ -139,10 +140,13 @@ void printer_run(){
     for (;;) // A Task shall never return or exit.
     {
         run_printer();
-        // vTaskDelay(10);
+        vTaskDelay(1); // At least one scheduler tick, even with a coarse tick rate.
         if(printer_test){
             printer_test = false;
+            get_device_state()->printer_state=PRINTER_STATUS_START;
             testSTB();
+            get_device_state()->printer_state=PRINTER_STATUS_FINISH;
+            ble_report();
         }
     }
 }

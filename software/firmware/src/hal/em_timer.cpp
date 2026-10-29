@@ -6,8 +6,8 @@
 Ticker read_state_timer;
 Ticker printer_timer;
 
-bool read_state_timeout = true;
-bool printer_timeout = false;
+volatile bool read_state_timeout = true;
+volatile bool printer_timeout = false;
 
 static void read_state_timer_callbackfun(){
   Serial.println("read_state now...");
@@ -37,7 +37,7 @@ bool get_printer_timeout_status(){
 
 void open_printer_timeout_timer(){
   printer_timeout = false;
-  printer_timer.once_ms(20000, printer_timeout_callbackfun);     
+  printer_timer.once_ms(20000, printer_timeout_callbackfun);
 }
 
 void close_printer_timeout_timer(){

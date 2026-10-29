@@ -11,13 +11,13 @@
 
 /**
  * @brief 初始化BLE
- * 
+ *
  */
 void init_ble();
 
 /**
  * @brief 清空接收包统计
- * 
+ *
  */
 void clean_blepack_count();
 
@@ -28,15 +28,15 @@ uint32_t get_blepack_count();
 
 /**
  * @brief Get the ble connect object
- * 
- * @return true 
- * @return false 
+ *
+ * @return true
+ * @return false
  */
 bool get_ble_connect();
 
 /**
- * @brief 
- * 
+ * @brief
+ *
  */
 void ble_report();
 

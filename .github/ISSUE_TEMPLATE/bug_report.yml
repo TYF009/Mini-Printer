@@ -1,0 +1,21 @@
+name: Bug report / 问题反馈
+description: Report a reproducible app, firmware or build problem.
+body:
+  - type: textarea
+    id: versions
+    attributes:
+      label: Versions / 版本
+      description: App, firmware commit, hardware revision, Android version and phone model.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected and actual behavior / 复现步骤与结果
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Logs or photos / 日志或照片
+      description: Redact personal identifiers. State whether a real print was attempted.

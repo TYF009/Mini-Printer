@@ -1,4 +1,5 @@
 #include "em_config.h"
+#include "utils/temperature.h"
 
 
 
@@ -19,8 +20,8 @@ void adc_test() {
 
 /**
  * @brief 获取ADC引脚电压值，可根据需要加入滤波算法
- * 
- * @return int 
+ *
+ * @return int
  */
 int get_adc_volts(){
     // int analogValue = analogRead(PIN_BATTERY_ADC);
@@ -75,24 +76,13 @@ float em_temp_calculate(float Rt)
 
 /**
  * @brief Get the adc temperatrue object
- * 
- * @return float 
+ *
+ * @return float
  */
 float get_adc_temperatrue(){
-  float temp = 0.0f;
-  float Rt=0;
-  float vol=0;
-  //ADC转换为电压 vol=AD/4096*VCC
-  // vol=(float)((analogRead(PIN_TEMPERATRUE))*(3.3/4096));
-  // vol=(float)((analogRead(PIN_TEMPERATRUE))*(3900.0/4095.0));
-  // Serial.printf("ADC temperatrue analog value = %f %d\n",vol,analogRead(PIN_TEMPERATRUE));
-  vol = analogReadMilliVolts(PIN_TEMPERATRUE)/1000.0;
-  Serial.printf("ADC temperatrue analog value = %f\n",vol);
-  //电压转换为阻值 10k  vol/VCC=Rt/(R+Rt)  vol/3.3=Rt/(10000+Rt)
-  Rt=(vol*10000)/(3.3-vol);
-  Serial.printf("ADC temperatrue Rt = %f\n",Rt);
-  temp = em_temp_calculate(Rt);
-  return temp;
+  const int raw=analogRead(PIN_TEMPERATRUE);
+  if(raw<=0 || raw>=4095)return NAN;
+  return foli::ntc_celsius(float(analogReadMilliVolts(PIN_TEMPERATRUE)));
 }
 
 void em_adc_test(){
@@ -100,7 +90,7 @@ void em_adc_test(){
   float vol=3.0f;
   Rt=(vol*10000)/(3.3-vol);
   Serial.printf("Rt = %f\n",Rt);
-  
+
   Rt = 60000; //60k 10°C
   float temp = 0.0f;
   temp = em_temp_calculate(Rt);
