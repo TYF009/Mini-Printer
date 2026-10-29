@@ -18,6 +18,10 @@ Requires Android 7/API 24 or later. This is a debug-signed sideload build, not a
 
 ## Mechanical source bundle
 
-`FOLI-mechanical-source.zip` contains the complete original STEP and source mapping. It is prepared as a separate release asset. Public availability depends on the published GitHub release; consult [GitHub Releases](https://github.com/TYF009/Mini-Printer/releases). It is not an installed dependency for building Android or firmware.
+The [0.2.1 development preview](https://github.com/TYF009/Mini-Printer/releases/tag/v0.2.1-preview.1) is published with the APK, film and full mechanical sources.
+
+[Download FOLI-mechanical-source.zip](https://github.com/TYF009/Mini-Printer/releases/download/v0.2.1-preview.1/FOLI-mechanical-source.zip) · [Mechanical SHA-256](https://github.com/TYF009/Mini-Printer/releases/download/v0.2.1-preview.1/FOLI-mechanical-source.zip.sha256)
+
+The bundle contains the complete original STEP, printable STLs and source mapping. It is not required for building Android or firmware. Its SHA-256 is `ddcff17953f4c73a32fa87a5d25a1ede443b001c99b25fda2ba5865e2f13f47b`.
 
 The repository does not treat older physical printing as proof of a fresh end-to-end print with these software revisions. [Verification scope](../docs/en/verification.md) is part of the version record.

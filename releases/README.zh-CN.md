@@ -8,4 +8,4 @@
 
 当前组合为用户指定的 2026-09-04 嘉立创工程、此次加固的固件、Android 0.2.1/code4、提供的230918装配与230727/230719零件。硬件有历史实物与打印证据；固件仅编译/主机检查，新 App 仅构建/Lint/主机检查/签名，新组合未追加真机打印验证。
 
-完整 STEP 准备为单独的 FOLI-mechanical-source.zip 发布资产。是否已公开可用，请以[GitHub Releases](https://github.com/TYF009/Mini-Printer/releases)为准；它不影响 App/固件构建。详见[验证范围](../docs/zh-CN/verification.md)。
+完整 STEP、STL 与映射已在[0.2.1 开发预览](https://github.com/TYF009/Mini-Printer/releases/tag/v0.2.1-preview.1)发布：[下载机械源文件包](https://github.com/TYF009/Mini-Printer/releases/download/v0.2.1-preview.1/FOLI-mechanical-source.zip) · [SHA-256](https://github.com/TYF009/Mini-Printer/releases/download/v0.2.1-preview.1/FOLI-mechanical-source.zip.sha256)。它不影响 App/固件构建。详见[验证范围](../docs/zh-CN/verification.md)。
